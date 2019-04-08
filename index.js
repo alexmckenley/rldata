@@ -118,4 +118,7 @@ exports.handler = (event, context, cb) => {
     .catch(err => cb(err));
 };
 
-exports.handler(null, null, (err, d) => console.log(err, d));
+// Log if run from cli
+if (!process.env['LAMBDA_TASK_ROOT']) {
+  exports.handler(null, null, (err, d) => console.log(err, d));
+}
