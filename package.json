@@ -1,0 +1,11 @@
+{
+  "name": "rldata",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:alexmckenley/rldata.git",
+  "author": "Alex Taylor <alexmckenley@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "request": "^2.88.0"
+  }
+}
