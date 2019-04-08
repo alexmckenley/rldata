@@ -6,6 +6,7 @@
   "author": "Alex Taylor <alexmckenley@gmail.com>",
   "license": "MIT",
   "dependencies": {
+    "jsdom": "^14.0.0",
     "request": "^2.88.0"
   }
 }
