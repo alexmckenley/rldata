@@ -20,7 +20,7 @@ function parseTeam(node) {
   if (teamNameNode === null) throw null;
   const teamNameAbbr = teamNameNode.textContent.trim();
   const teamNameFull = node.querySelector(".team-template-text a").title.trim();
-  const teamImgURL = node.querySelector(".team-template-text a").href.trim();
+  const teamImgURL = node.querySelector(".team-template-image img").src.trim();
   return {
     name: teamNameAbbr,
     fullName: teamNameFull,
@@ -64,7 +64,7 @@ function parsePopups(nodes) {
         const rawTime = node.querySelector(".timer-object");
         // Remove invalid chars
         const cleanedTime = rawTime.textContent.replace("-", "");
-        const matchDate = new Date(Date.parse(cleanedTime));
+        const date = new Date(Date.parse(cleanedTime));
 
         // Get teams
         const teamA = parseTeam(
@@ -79,7 +79,7 @@ function parsePopups(nodes) {
 
         return {
           node,
-          matchDate,
+          date,
           teamA,
           teamB,
           matches
@@ -100,7 +100,7 @@ function getMatchesFromHTML(body) {
     Array.from(window.document.querySelectorAll(".bracket-popup"))
   );
   const now = new Date();
-  const completed = popups.filter(p => now > p.matchDate);
+  const completed = popups.filter(p => now > p.date);
   return completed;
 }
 
@@ -118,4 +118,4 @@ exports.handler = (event, context, cb) => {
     .catch(err => cb(err));
 };
 
-exports.handler(null, null, d => console.log(d));
+exports.handler(null, null, (err, d) => console.log(err, d));
