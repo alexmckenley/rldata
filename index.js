@@ -4,18 +4,11 @@ const request = require("request");
 const URI =
   "https://liquipedia.net/rocketleague/Rocket_League_Championship_Series/Season_7/North_America";
 
-// Fetch and parse
-fetchHTML(URI).then(html => {
-  const matches = getMatchesFromHTML(html);
-  console.log("Matches:");
-  console.log(JSON.stringify(matches, null, '\t'));
-});
-
 function fetchHTML(uri) {
   return new Promise((resolve, reject) => {
     request(uri, function(error, response, body) {
       if (error) {
-        reject(error);
+        reject('http error: ' + error);
       }
       resolve(body);
     });
@@ -92,7 +85,7 @@ function parsePopups(nodes) {
           matches
         };
       } catch (err) {
-        if (err) console.log(err);
+        if (err) console.log('err parsing popups: '+err);
         return null;
       }
     })
@@ -110,3 +103,19 @@ function getMatchesFromHTML(body) {
   const completed = popups.filter(p => now > p.matchDate);
   return completed;
 }
+
+exports.handler = (event, context, cb) => {
+  // Fetch and parse
+  fetchHTML(URI)
+    .then(html => {
+      const matches = getMatchesFromHTML(html);
+      const response = {
+        statusCode: 200,
+        body: JSON.stringify(matches)
+      };
+      cb(null, response);
+    })
+    .catch(err => cb(err));
+};
+
+exports.handler(null, null, d => console.log(d));
